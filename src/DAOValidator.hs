@@ -105,7 +105,6 @@ emurgoValidator stateCS dat redeemer ctx =
     ownValHash = case addressCredential . txOutAddress $ ownInput of
       ScriptCredential vh -> vh
       _                   -> traceError "error"
-    -- ToDo: define 'paysToCredential'
     ownOutput = headSingleton $ filter (paysToCredential ownValHash) (txInfoOutputs info)
     sigs = L.PaymentPubKeyHash <$> txInfoSignatories info
     stateTn = (\(ValidatorHash b) -> TokenName b) $ ownValHash
@@ -118,7 +117,6 @@ emurgoValidator stateCS dat redeemer ctx =
             Just d  -> d :: DaoDatum
           newApprovedSigs = approvedSignatories outDatum
         in
-          -- ToDo: define stateCS
           valueOf (txOutValue ownInput) stateCS stateTn  == 1 &&
           valueOf (txOutValue ownOutput) stateCS stateTn == 1 &&
           (case redeemer of
